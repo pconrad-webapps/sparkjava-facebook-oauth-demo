@@ -23,24 +23,16 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.sparkjava.SparkWebContext;
 
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GHRepository.Contributor;
-import org.kohsuke.github.GHUser;
-import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GHOrganization;
-
-
-import org.pac4j.oauth.profile.github.GitHubProfile;
 
 import java.util.Collection;
 
 
 /**
-   Demo of Spark Pac4j with Github OAuth
+   Demo of Spark Pac4j with Facebook OAuth
 
    @author pconrad
  */
-public class SparkPac4jGithubOAuthDemo {
+public class SparkFacebookOAuthDemo {
 
     private static java.util.List<CommonProfile> getProfiles(final Request request,
 						   final Response response) {
@@ -52,22 +44,18 @@ public class SparkPac4jGithubOAuthDemo {
     private final static MustacheTemplateEngine templateEngine = new MustacheTemplateEngine();
 
     /** 
-	add github information to the session
+	add facebook information to the session
 
     */
-    private static Map addGithub(Map model, Request request, Response response) {
-	GitHubProfile ghp = ((GitHubProfile)(model.get("ghp")));
-	if (ghp == null) {
-	    System.out.println("No github profile");
+    private static Map addFacebook(Map model, Request request, Response response) {
+	FacebookProfile fp = ((FacebookProfile)(model.get("fp")));
+	if (fp == null) {
+	    System.out.println("No facebook profile");
 	    return model;
 	}
 	try {
-	    String accessToken = ghp.getAccessToken();
-	    GitHub gh = null;
-	    gh =  GitHub.connect( model.get("userid").toString(), accessToken);
-	    GHOrganization org = gh.getOrganization("UCSB-CS56-Projects");
-	    java.util.Map<java.lang.String,GHRepository> repos = org.getRepositories();
-	    model.put("repos",repos.entrySet());
+	    // Here is where you can try getting an OAuth Token and using it
+	    // to access the Facebook API
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -85,7 +73,7 @@ public class SparkPac4jGithubOAuthDemo {
 	}
 	
 	model.put("session", map.entrySet());
-	/*
+	
 	java.util.List<CommonProfile> userProfiles = getProfiles(request,response);
 
 	map.put("profiles", userProfiles);
@@ -95,12 +83,12 @@ public class SparkPac4jGithubOAuthDemo {
 		CommonProfile firstProfile = userProfiles.get(0);
 		map.put("firstProfile", firstProfile);	
 		
-		GitHubProfile ghp = (GitHubProfile) firstProfile;
-		model.put("ghp", ghp);
-		model.put("userid",ghp.getUsername());
-		model.put("name",ghp.getDisplayName());
-		model.put("avatar_url",ghp.getPictureUrl());
-		model.put("email",ghp.getEmail());
+		FacebookProfile fp = (FacebookProfile) firstProfile;
+		model.put("fp", fp); /*
+		model.put("userid",fp.getUsername());
+		model.put("name",fp.getDisplayName());
+		model.put("avatar_url",fp.getPictureUrl());
+		model.put("email",fp.getEmail()); */
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -140,9 +128,9 @@ public class SparkPac4jGithubOAuthDemo {
     public static void main(String[] args) {
 	
 	HashMap<String,String> envVars =
-	    getNeededEnvVars(new String []{ "GITHUB_CLIENT_ID",
-					    "GITHUB_CLIENT_SECRET",
-					    "GITHUB_CALLBACK_URL",
+	    getNeededEnvVars(new String []{ "FACEBOOK_CLIENT_ID",
+					    "FACEBOOK_CLIENT_SECRET",
+					    "FACEBOOK_CALLBACK_URL",
 					    "APPLICATION_SALT"});
 	
 	Spark.staticFileLocation("/static");
@@ -156,20 +144,20 @@ public class SparkPac4jGithubOAuthDemo {
 	}
 
 	Config config = new
-	    GithubOAuthConfigFactory(envVars.get("GITHUB_CLIENT_ID"),
-				     envVars.get("GITHUB_CLIENT_SECRET"),
-				     envVars.get("GITHUB_CALLBACK_URL"),
+	    FacebookOAuthConfigFactory(envVars.get("FACEBOOK_CLIENT_ID"),
+				     envVars.get("FACEBOOK_CLIENT_SECRET"),
+				     envVars.get("FACEBOOK_CALLBACK_URL"),
 				     envVars.get("APPLICATION_SALT"),
 				     templateEngine).build();
 
 	final SecurityFilter
-	    githubFilter = new SecurityFilter(config, "GithubClient", "", "");
+	    facebookFilter = new SecurityFilter(config, "FacebookClient", "", "");
 
 	get("/",
 	    (request, response) -> new ModelAndView(buildModel(request,response),"home.mustache"),
 	    templateEngine);
 
-	before("/login", githubFilter);
+	before("/login", facebookFilter);
 
 	get("/login",
 	    (request, response) -> new ModelAndView(buildModel(request,response),"home.mustache"),
@@ -182,10 +170,10 @@ public class SparkPac4jGithubOAuthDemo {
 						    "session.mustache"),
 	    templateEngine);
 
-	get("/github",
+	get("/facebook",
 	    (request, response) ->
-	    new ModelAndView(addGithub(buildModel(request,response),request,response),
-			     "github.mustache"),
+	    new ModelAndView(addFacebook(buildModel(request,response),request,response),
+			     "facebook.mustache"),
 	    templateEngine);
 
 	
