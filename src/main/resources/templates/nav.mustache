@@ -22,14 +22,15 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+	<li><p class="navbar-text facebook-name">{{name}}</p></li>
 
-	{{#userid}} 
+	{{#name}} 
 	<li><a href="/logout">Logout</a></li>
-	{{/userid}}
+	{{/name}}
 
-	{{^userid}}
+	{{^name}}
 	<li><a href="/login">Login</a></li>
-	{{/userid}}
+	{{/name}}
 
       </ul>
     </div><!-- /.navbar-collapse -->

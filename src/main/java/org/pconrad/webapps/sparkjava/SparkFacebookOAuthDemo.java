@@ -24,6 +24,9 @@ import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.sparkjava.SparkWebContext;
 
 import org.pac4j.oauth.profile.facebook.FacebookProfile;
+import org.pac4j.oauth.profile.facebook.FacebookPicture;
+
+import org.pac4j.oauth.profile.OAuth20Profile;
 
 import java.util.Collection;
 
@@ -51,12 +54,25 @@ public class SparkFacebookOAuthDemo {
     private static Map addFacebook(Map model, Request request, Response response) {
 	FacebookProfile fp = ((FacebookProfile)(model.get("fp")));
 	if (fp == null) {
-	    System.out.println("No facebook profile");
+	    System.out.println("model contains no facebook profile fp");
 	    return model;
 	}
 	try {
+
 	    // Here is where you can try getting an OAuth Token and using it
 	    // to access the Facebook API
+	    
+	    OAuth20Profile oa2p = ( OAuth20Profile ) model.get("firstProfile");
+	    if (oa2p==null) {
+		System.out.println("model contains Facebook profile fp, but no firstProfile");
+		return model;
+	    }
+	    String accessToken = oa2p.getAccessToken();
+	    // System.err.println("accessToken="+accessToken);
+	    if (accessToken != null) {
+
+	    }
+
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -77,18 +93,26 @@ public class SparkFacebookOAuthDemo {
 	
 	java.util.List<CommonProfile> userProfiles = getProfiles(request,response);
 
-	map.put("profiles", userProfiles);
+	model.put("profiles", userProfiles);
 
 	try {
 	    if (userProfiles.size()>0) {
 		CommonProfile firstProfile = userProfiles.get(0);
-		map.put("firstProfile", firstProfile);	
+		model.put("firstProfile", firstProfile);	
 		
 		FacebookProfile fp = (FacebookProfile) firstProfile;
+		// See: https://github.com/pac4j/pac4j/blob/master/pac4j-oauth/src/main/java/org/pac4j/oauth/profile/facebook/FacebookProfile.java
+
+		// And: https://github.com/pac4j/pac4j/blob/master/pac4j-oauth/src/main/java/org/pac4j/oauth/profile/facebook/FacebookPicture.java
+
+		FacebookPicture fbPic = fp.getPicture();
+		
 		model.put("fp", fp); 
-		model.put("userid",fp.getUsername());
 		model.put("name",fp.getDisplayName());
-		model.put("avatar_url",fp.getPictureUrl());
+		if (fbPic!=null)
+		    model.put("avatar_url",fbPic.getUrl());
+		else
+		    model.put("avatar_url","");
 		model.put("email",fp.getEmail()); 
 	    }
 	} catch (Exception e) {

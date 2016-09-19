@@ -42,7 +42,7 @@ public class FacebookOAuthConfigFactory implements ConfigFactory {
 	    new FacebookClient(facebook_client_id,
 			     facebook_client_secret);
 
-	// facebookClient.setScope("user");
+	facebookClient.setScope("public_profile");
 	Clients clients = new Clients(this.callback_url, facebookClient);
 	
 	org.pac4j.core.config.Config config =
