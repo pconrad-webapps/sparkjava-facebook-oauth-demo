@@ -1,6 +1,6 @@
 # sparkjava-facebook-oauth-demo
 
-
+Running on Heroku at: https://sparkjava-facebook-oauth-demo.herokuapp.com/
 
 Requires Java 1.8, and Maven (`mvn` command)
 
