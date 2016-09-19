@@ -23,6 +23,7 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.sparkjava.SparkWebContext;
 
+import org.pac4j.oauth.profile.facebook.FacebookProfile;
 
 import java.util.Collection;
 
@@ -84,16 +85,16 @@ public class SparkFacebookOAuthDemo {
 		map.put("firstProfile", firstProfile);	
 		
 		FacebookProfile fp = (FacebookProfile) firstProfile;
-		model.put("fp", fp); /*
+		model.put("fp", fp); 
 		model.put("userid",fp.getUsername());
 		model.put("name",fp.getDisplayName());
 		model.put("avatar_url",fp.getPictureUrl());
-		model.put("email",fp.getEmail()); */
+		model.put("email",fp.getEmail()); 
 	    }
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
-	*/
+	
 	return model;	
     }
 
