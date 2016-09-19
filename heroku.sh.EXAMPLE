@@ -1,4 +1,8 @@
-heroku config:set GITHUB_CLIENT_ID=111111111111
-heroku config:set GITHUB_CLIENT_SECRET=2222222222222222222
-heroku config:set GITHUB_CALLBACK_URL=http://localhost:4567/callback
+# Set up app at https://developers.facebook.com/quickstarts/?platform=web
+#  You need to "+Add Product" and then add "Facebook Login"
+#  There, enable "Web OAuth Login" add your callback_url to the "Valid OAuth redirect URIs"
+
+heroku config:set FACEBOOK_CLIENT_ID=111111111111
+heroku config:set FACEBOOK_CLIENT_SECRET=2222222222222222222
+heroku config:set FACEBOOK_CALLBACK_URL=http://localhost:4567/callback
 heroku config:set  APPLICATION_SALT=3333333333333333333
