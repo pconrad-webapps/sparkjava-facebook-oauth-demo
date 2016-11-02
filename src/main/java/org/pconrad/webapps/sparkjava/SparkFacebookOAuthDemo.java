@@ -68,7 +68,7 @@ public class SparkFacebookOAuthDemo {
 		return model;
 	    }
 	    String accessToken = oa2p.getAccessToken();
-	    // System.err.println("accessToken="+accessToken);
+	    System.err.println("accessToken="+accessToken);
 	    if (accessToken != null) {
 
 	    }
