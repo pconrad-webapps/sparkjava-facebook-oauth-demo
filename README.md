@@ -8,9 +8,11 @@ To deploy
 
 One time steps:
 
-1.  *One time step*: Register a Github OAuth application at
-    <https://github.com/settings/applications/new> to obtain
-        values for GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET
+1.  *One time step*: Register a Facebook OAuth application at <http://developers.facebook.com>
+
+TODO: Change stuff below to FACEBOOK
+
+ALSO Add code from: http://facebook4j.github.io/en/code-examples.html
 
 2.  *One time step*:
     Copy `env.sh.SAMPLE` to `env.sh`, and edit `env.sh`
