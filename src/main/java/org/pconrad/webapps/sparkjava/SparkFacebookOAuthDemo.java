@@ -38,6 +38,8 @@ import java.util.Collection;
  */
 public class SparkFacebookOAuthDemo {
 
+    private static String FACEBOOK_CLIENT_ID;
+    
     private static java.util.List<CommonProfile> getProfiles(final Request request,
 						   final Response response) {
 	final SparkWebContext context = new SparkWebContext(request, response);
@@ -82,6 +84,14 @@ public class SparkFacebookOAuthDemo {
     private static Map buildModel(Request request, Response response) {
 
 	final Map model = new HashMap<String,Object>();
+
+	// TODO: Refactor this... it's a global variable, and that's icky
+	
+	if (FACEBOOK_CLIENT_ID==null) {
+	    model.put("facebook_client_id","");
+	} else {
+	    model.put("facebook_client_id",FACEBOOK_CLIENT_ID);
+	}
 	
 	Map<String, Object> map = new HashMap<String, Object>();
 	for (String k: request.session().attributes()) {
@@ -157,6 +167,8 @@ public class SparkFacebookOAuthDemo {
 					    "FACEBOOK_CLIENT_SECRET",
 					    "FACEBOOK_CALLBACK_URL",
 					    "APPLICATION_SALT"});
+
+	FACEBOOK_CLIENT_ID=envVars.get("FACEBOOK_CLIENT_ID");
 	
 	Spark.staticFileLocation("/static");
 	
